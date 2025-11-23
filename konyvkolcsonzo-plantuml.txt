@@ -1,0 +1,37 @@
+@startuml simple_book_store_extended
+title Könyvtár Kölcsönzési és Visszahozatali Folyamat
+
+actor Olvasó
+participant "Könyvtári Rendszer" as SYSTEM
+participant "Adatbázis" as DB
+
+Olvasó -> SYSTEM: Könyv keresése
+SYSTEM -> DB: Lekérdezés
+DB -> SYSTEM: Könyv adatok
+
+alt Könyv elérhető
+  SYSTEM -> Olvasó: Könyv információk
+  Olvasó -> SYSTEM: Kölcsönzés
+  SYSTEM -> DB: Kölcsönzés rögzítése
+  DB -> SYSTEM: Sikeres
+  SYSTEM -> Olvasó: Kölcsönzési időpont
+
+  Olvasó -> SYSTEM: Visszahozás
+  SYSTEM -> DB: Visszahozási dátum rögzítése
+  alt Késedelmes visszahozás
+    SYSTEM -> DB: Késedelmi díj kiszámítása és rögzítése
+    DB -> SYSTEM: Díj rögzítve
+    SYSTEM -> Olvasó: Késedelmi díj értesítés
+  else Időben visszahozás
+    SYSTEM -> Olvasó: Köszönjük a visszahozást
+  end
+
+  Olvasó -> SYSTEM: Könyv értékelése
+  SYSTEM -> DB: Értékelés rögzítése
+  DB -> SYSTEM: Értékelés mentve
+  SYSTEM -> Olvasó: Köszönjük az értékelést
+
+else Könyv foglalt
+  SYSTEM -> Olvasó: Foglalás lehetséges
+end
+@enduml

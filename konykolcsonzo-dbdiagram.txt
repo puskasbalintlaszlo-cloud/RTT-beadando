@@ -1,0 +1,58 @@
+Table felhasznalok {
+    id int [pk]
+    email varchar(100) [unique]
+    jelszo varchar(255)
+    keresztnev varchar(50)
+    vezetéknev varchar(50)
+    telefonszam varchar(20)
+    regisztracio_datum timestamp
+  }
+
+  Table szerzok {
+    id int [pk]
+    nev varchar(100) [unique]
+    bio text
+  }
+
+  Table konyv_kategorizak {
+    id int [pk]
+    nev varchar(50) [unique]
+    leiras text
+  }
+
+  Table konyv_katalogus {
+    id int [pk]
+    cim varchar(200)
+    szerzo_id int [ref: > szerzok.id]
+    kategoria_id int [ref: > konyv_kategorizak.id]
+    isbn varchar(20) [unique]
+    kiadasi_ev int
+    fizikai_pelda_szam int 
+  }
+
+  Table kolcsonzesek {
+    id int [pk]
+    felhasznalo_id int [ref: > felhasznalok.id]
+    konyv_id int [ref: > konyv_katalogus.id]
+    kolcsonzes_kezdete timestamp
+    kolcsonzes_vegezodese timestamp
+    visszahozas_datum timestamp 
+    allapot varchar(20) 
+  }
+
+  Table ertekelesek {
+    id int [pk]
+    konyv_id int [ref: > konyv_katalogus.id]
+    felhasznalo_id int [ref: > felhasznalok.id]
+    pontszam int [note: '1-5']
+    velemenyek text
+    ertekel_datum timestamp
+  }
+
+  Table koltsegesek {
+    id int [pk]
+    kolcsonzes_id int [ref: > kolcsonzesek.id]
+    koltseg_tipus varchar(50) [note: 'KESEDELMI_DIJ, KARTERITES']
+    osszeg decimal(10,2)
+    szerzodesi_datum timestamp
+  }
