@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  #Webszerver
+  web:
+    build: .
+    container_name: wp2-web
+    ports:
+      - "5300:80"
+    volumes:
+      - ./web:/var/www/html
+    environment:
+      - DB_HOST=db
+      - DB_USER=root
+      - DB_PASSWORD=root
+      - DB_NAME=wp2_lev
+    depends_on:
+      - db
+    networks:
+      - wp2-network
+
+  # DB
+  db:
+    image: mysql:8.0
+    container_name: wp2-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: wp2_lev
+    volumes:
+      - ./init-db:/docker-entrypoint-initdb.d
+      - db-data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - wp2-network
+
+volumes:
+  db-data:
+
+networks:
+  wp2-network:
+    driver: bridge
