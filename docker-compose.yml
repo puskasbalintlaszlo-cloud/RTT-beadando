@@ -6,7 +6,7 @@ services:
     build: .
     container_name: wp2-web
     ports:
-      - "5300:80"
+      - "${WEBPORT}:80"
     volumes:
       - ./web:/var/www/html
     environment:
@@ -22,7 +22,7 @@ services:
   # DB
   db:
     image: mysql:8.0
-    container_name: wp2-db
+    container_name: db
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: wp2_lev
