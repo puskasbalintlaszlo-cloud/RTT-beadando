@@ -6,6 +6,7 @@ Table felhasznalok {
     vezetéknev varchar(50)
     telefonszam varchar(20)
     regisztracio_datum timestamp
+    kolcsonozhetoE bool
   }
 
   Table szerzok {
